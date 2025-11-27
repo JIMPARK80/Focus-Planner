@@ -39,6 +39,9 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
+# Application data files
+tasks.json
+
 # Files built by Visual Studio
 *_i.c
 *_p.c
