@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Planner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Focus Planner</h1>
+            <p class="subtitle">오늘의 집중 계획을 세워보세요</p>
+            <div class="save-status" id="saveStatus">
+                <span class="save-icon">💾</span>
+                <span class="save-text">자동 저장됨</span>
+            </div>
+        </header>
+
+        <div class="input-section">
+            <input 
+                type="text" 
+                id="taskInput" 
+                placeholder="할 일을 입력하세요..." 
+                maxlength="100"
+            >
+            <button id="addBtn" class="btn-primary">추가</button>
+        </div>
+
+        <div class="filter-section">
+            <button class="filter-btn active" data-filter="all">전체</button>
+            <button class="filter-btn" data-filter="active">진행중</button>
+            <button class="filter-btn" data-filter="completed">완료</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-label">전체</span>
+                <span class="stat-value" id="totalCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">진행중</span>
+                <span class="stat-value" id="activeCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">완료</span>
+                <span class="stat-value" id="completedCount">0</span>
+            </div>
+        </div>
+
+        <ul id="taskList" class="task-list"></ul>
+
+        <div class="actions">
+            <button id="clearCompleted" class="btn-secondary">완료된 항목 삭제</button>
+            <button id="clearAll" class="btn-danger">모두 삭제</button>
+        </div>
+
+        <div class="json-actions">
+            <button id="exportJSON" class="btn-json">📥 JSON 내보내기</button>
+            <label for="importJSON" class="btn-json">📤 JSON 가져오기</label>
+            <input type="file" id="importJSON" accept=".json" style="display: none;">
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
