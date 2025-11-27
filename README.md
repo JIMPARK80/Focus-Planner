@@ -1,43 +1,51 @@
 # Focus Planner v0.3
 
-WPF 기반 할 일 관리 애플리케이션 (Front-End Only)
+A WPF-based task management application (Front-End Only)
 
-## 기능
+[한국어 버전 / Korean Version](README.ko.md)
 
-- ✅ 할 일 추가
-- ✅ 완료 체크
-- ✅ 완료된 항목 삭제
-- ✅ 목록 새로고침
-- ✅ Enter 키로 빠른 추가
+## Features
 
-## 실행 방법
+- ✅ Add tasks
+- ✅ Mark tasks as complete
+- ✅ Delete completed items
+- ✅ Refresh task list
+- ✅ Quick add with Enter key
+- ✅ Separate display for completed tasks on the right
 
-### 방법 1: 솔루션 파일 사용 (권장)
+## How to Run
+
+### Method 1: Using Solution File (Recommended)
 
 ```bash
-# 솔루션 빌드
+# Build solution
 dotnet build "Focus Planner.sln"
 
-# 애플리케이션 실행
+# Run application
 dotnet run --project FocusPlanner.csproj
 ```
 
-### 방법 2: 프로젝트 파일 직접 지정
+### Method 2: Direct Project File
 
 ```bash
-# 프로젝트 빌드
+# Build project
 dotnet build FocusPlanner.csproj
 
-# 애플리케이션 실행
+# Run application
 dotnet run --project FocusPlanner.csproj
 ```
 
-### 방법 3: Visual Studio
+### Method 3: Visual Studio
 
-Visual Studio에서 `Focus Planner.sln` 파일을 열고 F5로 실행
+Open `Focus Planner.sln` in Visual Studio and press F5 to run
 
-## 다음 단계
+## Tech Stack
 
-- Google Sheets API 연결
-- 백엔드 통합
+- .NET 7.0
+- WPF (Windows Presentation Foundation)
+- Pure C# code-only UI (no XAML)
 
+## Next Steps
+
+- Google Sheets API integration
+- Backend integration
