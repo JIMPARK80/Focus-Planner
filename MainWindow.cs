@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,6 +16,7 @@ namespace FocusPlanner
 
     public class MainWindow : Window
     {
+        private const string TasksFileName = "tasks.json";
         private List<TaskItem> tasks = new();
         private TextBox taskInput = null!;
         private ComboBox categoryComboBox = null!;
@@ -25,8 +28,9 @@ namespace FocusPlanner
         public MainWindow()
         {
             InitializeComponent();
-            LoadDummyData();
+            LoadTasks();
             RenderTasks();
+            Closing += (_, __) => SaveTasks();
         }
 
         private void InitializeComponent()
@@ -143,14 +147,47 @@ namespace FocusPlanner
             Content = grid;
         }
 
-        private void LoadDummyData()
+        private void LoadTasks()
         {
+            try
+            {
+                if (File.Exists(TasksFileName))
+                {
+                    string json = File.ReadAllText(TasksFileName);
+                    var loadedTasks = JsonSerializer.Deserialize<List<TaskItem>>(json);
+                    if (loadedTasks != null)
+                    {
+                        tasks = loadedTasks;
+                        return;
+                    }
+                }
+            }
+            catch
+            {
+                // 파일 로드 실패 시 더미 데이터 사용
+            }
+            
+            // 기본 더미 데이터
             tasks = new List<TaskItem>
             {
                 new TaskItem("Upload new YouTube video", false, TaskCategory.Livelihood),
                 new TaskItem("Study CELPIP reading", false, TaskCategory.Livelihood),
                 new TaskItem("Polish clicker game prototype", true, TaskCategory.Livelihood)
             };
+        }
+
+        private void SaveTasks()
+        {
+            try
+            {
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                string json = JsonSerializer.Serialize(tasks, options);
+                File.WriteAllText(TasksFileName, json);
+            }
+            catch
+            {
+                // 저장 실패 시 무시
+            }
         }
 
         private void AddTask()
@@ -164,12 +201,14 @@ namespace FocusPlanner
             
             tasks.Add(new TaskItem(title, false, selectedCategory));
             taskInput.Clear();
+            SaveTasks();
             RenderTasks();
         }
 
         private void DeleteCompleted()
         {
             tasks = tasks.Where(t => !t.IsCompleted).ToList();
+            SaveTasks();
             RenderTasks();
         }
 
@@ -197,12 +236,14 @@ namespace FocusPlanner
                 cb.Checked += (_, __) =>
                 {
                     t.IsCompleted = true;
+                    SaveTasks();
                     RenderTasks();
                 };
 
                 cb.Unchecked += (_, __) =>
                 {
                     t.IsCompleted = false;
+                    SaveTasks();
                     RenderTasks();
                 };
 
@@ -289,6 +330,7 @@ namespace FocusPlanner
                     {
                         task.Category = selectedCategory;
                     }
+                    SaveTasks();
                 }
                 RenderTasks();
             };
