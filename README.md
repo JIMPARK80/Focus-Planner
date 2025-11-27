@@ -1,51 +1,35 @@
-# Focus Planner v0.3
+# 🎯 Focus Planner
 
-A WPF-based task management application (Front-End Only)
+Simple and beautiful task planner built with vanilla JavaScript.
 
-[한국어 버전 / Korean Version](README.ko.md)
+## Features / 기능
 
-## Features
+- ✅ Add and manage tasks / 할 일 추가 및 관리
+- ✅ Mark tasks as completed / 완료 표시
+- ✅ Filter tasks (All, Active, Completed) / 필터링 (전체, 진행중, 완료)
+- ✅ Statistics / 통계
+- ✅ Data persistence with localStorage / localStorage를 통한 데이터 저장
+- ✅ Clean and modern UI / 깔끔하고 현대적인 UI
+- ✅ Responsive design / 반응형 디자인
 
-- ✅ Add tasks
-- ✅ Mark tasks as complete
-- ✅ Delete completed items
-- ✅ Refresh task list
-- ✅ Quick add with Enter key
-- ✅ Separate display for completed tasks on the right
+## How to Use / 사용 방법
 
-## How to Run
+1. Open `index.html` in your web browser
+2. Add tasks by typing and clicking "추가" or pressing Enter
+3. Check the checkbox to mark tasks as completed
+4. Use filter buttons to view different task states
+5. Delete individual tasks or clear all/completed tasks
 
-### Method 1: Using Solution File (Recommended)
+## Files
 
-```bash
-# Build solution
-dotnet build "Focus Planner.sln"
+- `index.html` - Main HTML structure
+- `style.css` - Styles and layout
+- `script.js` - JavaScript functionality
 
-# Run application
-dotnet run --project FocusPlanner.csproj
-```
+## Technologies
 
-### Method 2: Direct Project File
+- HTML5
+- CSS3 (with CSS Grid and Flexbox)
+- Vanilla JavaScript (ES6+)
 
-```bash
-# Build project
-dotnet build FocusPlanner.csproj
-
-# Run application
-dotnet run --project FocusPlanner.csproj
-```
-
-### Method 3: Visual Studio
-
-Open `Focus Planner.sln` in Visual Studio and press F5 to run
-
-## Tech Stack
-
-- .NET 8.0
-- WPF (Windows Presentation Foundation)
-- Pure C# code-only UI (no XAML)
-
-## Next Steps
-
-- Google Sheets API integration
-- Backend integration
+Enjoy planning your focus sessions! 🚀
