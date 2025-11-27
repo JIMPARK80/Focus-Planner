@@ -27,6 +27,7 @@ namespace FocusPlanner
 
         public MainWindow()
         {
+            Title = "Focus Planner v0.4-dev";
             InitializeComponent();
             LoadTasks();
             RenderTasks();
@@ -35,7 +36,6 @@ namespace FocusPlanner
 
         private void InitializeComponent()
         {
-            Title = "Focus Planner";
             Height = 500;
             Width = 1000;
 
