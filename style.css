@@ -13,7 +13,7 @@ body {
 }
 
 .container {
-    max-width: 600px;
+    max-width: 720px;
     margin: 0 auto;
     background: white;
     border-radius: 20px;
@@ -272,6 +272,49 @@ header h1 {
     background: #138496;
 }
 
+.template-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid #e0e0e0;
+}
+
+.template-label {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.template-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-template {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.btn-template:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-template:active {
+    transform: translateY(0);
+}
+
 .btn-secondary {
     padding: 10px 20px;
     background: #6c757d;
@@ -327,6 +370,22 @@ header h1 {
     }
 
     .btn-primary {
+        width: 100%;
+    }
+
+    .template-buttons {
+        flex-direction: column;
+    }
+
+    .btn-template {
+        width: 100%;
+    }
+
+    .json-actions {
+        flex-direction: column;
+    }
+
+    .btn-json {
         width: 100%;
     }
 }

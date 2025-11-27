@@ -1,63 +1,47 @@
 {
   "version": "1.0",
   "exportDate": "2024-01-15T00:00:00.000Z",
+  "category": "daily-basic",
+  "description": "롱폼 없는 날 - 총 7개",
   "tasks": [
     {
       "id": 1,
-      "text": "[YTB-감동] 🎬 롱폼 1개 제작/업로드",
-      "completed": false,
-      "createdAt": "2024-01-15T00:00:00.000Z"
-    },
-    {
-      "id": 2,
-      "text": "[YTB-Jim] 🎬 롱폼 1개 제작/업로드",
-      "completed": false,
-      "createdAt": "2024-01-15T00:00:00.000Z"
-    },
-    {
-      "id": 3,
-      "text": "[YTB-행복] 🎬 롱폼 1개 제작/업로드",
-      "completed": false,
-      "createdAt": "2024-01-15T00:00:00.000Z"
-    },
-    {
-      "id": 4,
       "text": "[STUDY-영어] 🇨🇦 CELPIP 영어 공부 30분",
       "completed": false,
       "createdAt": "2024-01-15T00:00:00.000Z"
     },
     {
-      "id": 5,
+      "id": 2,
       "text": "[STUDY-보안] 🔐 사이버보안 공부 30분",
       "completed": false,
       "createdAt": "2024-01-15T00:00:00.000Z"
     },
     {
-      "id": 6,
+      "id": 3,
       "text": "[DEV-앱] 🛠 유튜브 앱 개발 1시간 · 최소 1커밋",
       "completed": false,
       "createdAt": "2024-01-15T00:00:00.000Z"
     },
     {
-      "id": 7,
+      "id": 4,
       "text": "[DEV-게임] 🎮 게임 개발 1시간 · 최소 1커밋",
       "completed": false,
       "createdAt": "2024-01-15T00:00:00.000Z"
     },
     {
-      "id": 8,
+      "id": 5,
       "text": "[YTB-감동] 🎞 쇼츠 1개 업로드",
       "completed": false,
       "createdAt": "2024-01-15T00:00:00.000Z"
     },
     {
-      "id": 9,
+      "id": 6,
       "text": "[YTB-Jim] 🎞 쇼츠 1개 업로드",
       "completed": false,
       "createdAt": "2024-01-15T00:00:00.000Z"
     },
     {
-      "id": 10,
+      "id": 7,
       "text": "[YTB-행복] 🎞 쇼츠 1개 업로드",
       "completed": false,
       "createdAt": "2024-01-15T00:00:00.000Z"

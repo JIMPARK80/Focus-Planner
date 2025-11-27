@@ -16,6 +16,8 @@ const activeCount = document.getElementById('activeCount');
 const completedCount = document.getElementById('completedCount');
 const exportJSONBtn = document.getElementById('exportJSON');
 const importJSONInput = document.getElementById('importJSON');
+const loadDailyBasicBtn = document.getElementById('loadDailyBasic');
+const loadDailyLongformBtn = document.getElementById('loadDailyLongform');
 
 // Load tasks from localStorage
 function loadTasks() {
@@ -248,6 +250,64 @@ function importFromJSON(event) {
     event.target.value = ''; // Reset input to allow importing same file again
 }
 
+// Load template from JSON file
+async function loadTemplate(filename) {
+    try {
+        const response = await fetch(filename);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Support both old format (array) and new format (object with tasks)
+        let importedTasks = Array.isArray(data) ? data : (data.tasks || []);
+        
+        if (!Array.isArray(importedTasks) || importedTasks.length === 0) {
+            alert('템플릿에 유효한 할 일 데이터가 없습니다.');
+            return;
+        }
+
+        // Validate task structure
+        const validTasks = importedTasks.filter(task => 
+            task && typeof task === 'object' && 
+            task.id && task.text && typeof task.text === 'string'
+        );
+
+        if (validTasks.length === 0) {
+            alert('유효한 할 일 형식이 아닙니다.');
+            return;
+        }
+
+        // Generate unique IDs to avoid conflicts
+        const maxExistingId = tasks.length > 0 ? Math.max(...tasks.map(t => parseInt(t.id) || 0)) : 0;
+        validTasks.forEach((task, index) => {
+            task.id = maxExistingId + index + 1;
+            if (!task.createdAt) {
+                task.createdAt = new Date().toISOString();
+            }
+        });
+
+        if (confirm(`템플릿의 할 일 ${validTasks.length}개를 기존 ${tasks.length}개의 할 일과 합치시겠습니까?\n(취소하면 기존 데이터를 대체합니다)`)) {
+            // Merge: combine with existing tasks
+            tasks = [...tasks, ...validTasks];
+        } else {
+            // Replace: use imported tasks only
+            tasks = validTasks;
+        }
+
+        saveTasks();
+        renderTasks();
+        updateStats();
+        
+        const templateName = filename.includes('longform') ? '롱폼 있는 날' : '롱폼 없는 날';
+        alert(`템플릿 "${templateName}"에서 할 일 ${validTasks.length}개를 성공적으로 불러왔습니다!`);
+    } catch (error) {
+        console.error('템플릿 로드 오류:', error);
+        alert('템플릿 파일을 불러오는 중 오류가 발생했습니다.\n파일이 존재하는지 확인해주세요.');
+    }
+}
+
 // Event Listeners
 addBtn.addEventListener('click', addTask);
 
@@ -298,6 +358,10 @@ clearAllBtn.addEventListener('click', () => {
 // JSON export/import event listeners
 exportJSONBtn.addEventListener('click', exportToJSON);
 importJSONInput.addEventListener('change', importFromJSON);
+
+// Template load event listeners
+loadDailyBasicBtn.addEventListener('click', () => loadTemplate('daily-basic.json'));
+loadDailyLongformBtn.addEventListener('click', () => loadTemplate('daily-longform.json'));
 
 // Initialize app
 loadTasks();
