@@ -41,7 +41,7 @@ Open `Focus Planner.sln` in Visual Studio and press F5 to run
 
 ## Tech Stack
 
-- .NET 7.0
+- .NET 8.0
 - WPF (Windows Presentation Foundation)
 - Pure C# code-only UI (no XAML)
 

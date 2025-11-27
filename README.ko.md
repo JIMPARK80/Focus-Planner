@@ -39,7 +39,7 @@ Visual Studio에서 `Focus Planner.sln` 파일을 열고 F5로 실행
 
 ## 기술 스택
 
-- .NET 7.0
+- .NET 8.0
 - WPF (Windows Presentation Foundation)
 - Pure C# code-only UI (no XAML)
 

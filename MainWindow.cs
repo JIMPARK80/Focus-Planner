@@ -5,13 +5,20 @@ using System.Windows.Controls;
 
 namespace FocusPlanner
 {
+    public enum TaskCategory
+    {
+        Livelihood,
+        FutureGrowth,
+        PermanentResidency
+    }
+
     public class MainWindow : Window
     {
         private List<TaskItem> tasks = new();
         private TextBox taskInput = null!;
+        private ComboBox categoryComboBox = null!;
         private Button addButton = null!;
         private Button deleteButton = null!;
-        private Button refreshButton = null!;
         private ListBox pendingTaskList = null!;
         private ListBox completedTaskList = null!;
 
@@ -56,6 +63,18 @@ namespace FocusPlanner
                     AddTask();
             };
 
+            categoryComboBox = new ComboBox
+            {
+                Width = 140,
+                Margin = new Thickness(0, 0, 8, 0),
+                FontSize = 14,
+                VerticalContentAlignment = VerticalAlignment.Center
+            };
+            categoryComboBox.Items.Add(TaskCategory.Livelihood);
+            categoryComboBox.Items.Add(TaskCategory.FutureGrowth);
+            categoryComboBox.Items.Add(TaskCategory.PermanentResidency);
+            categoryComboBox.SelectedItem = TaskCategory.Livelihood;
+
             addButton = new Button
             {
                 Content = "Add",
@@ -72,17 +91,10 @@ namespace FocusPlanner
             };
             deleteButton.Click += (_, __) => DeleteCompleted();
 
-            refreshButton = new Button
-            {
-                Content = "Refresh",
-                Width = 80
-            };
-            refreshButton.Click += (_, __) => RenderTasks();
-
             inputPanel.Children.Add(taskInput);
+            inputPanel.Children.Add(categoryComboBox);
             inputPanel.Children.Add(addButton);
             inputPanel.Children.Add(deleteButton);
-            inputPanel.Children.Add(refreshButton);
 
             var pendingLabel = new TextBlock
             {
@@ -135,9 +147,9 @@ namespace FocusPlanner
         {
             tasks = new List<TaskItem>
             {
-                new TaskItem("Upload new YouTube video", false),
-                new TaskItem("Study CELPIP reading", false),
-                new TaskItem("Polish clicker game prototype", true)
+                new TaskItem("Upload new YouTube video", false, TaskCategory.Livelihood),
+                new TaskItem("Study CELPIP reading", false, TaskCategory.Livelihood),
+                new TaskItem("Polish clicker game prototype", true, TaskCategory.Livelihood)
             };
         }
 
@@ -145,14 +157,19 @@ namespace FocusPlanner
         {
             string title = taskInput.Text.Trim();
             if (string.IsNullOrWhiteSpace(title)) return;
-            tasks.Add(new TaskItem(title, false));
+            
+            var selectedCategory = categoryComboBox.SelectedItem is TaskCategory category 
+                ? category 
+                : TaskCategory.Livelihood;
+            
+            tasks.Add(new TaskItem(title, false, selectedCategory));
             taskInput.Clear();
             RenderTasks();
         }
 
         private void DeleteCompleted()
         {
-            tasks = tasks.Where(t => !t.Done).ToList();
+            tasks = tasks.Where(t => !t.IsCompleted).ToList();
             RenderTasks();
         }
 
@@ -163,47 +180,157 @@ namespace FocusPlanner
 
             foreach (var t in tasks)
             {
+                var itemPanel = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(5, 3, 0, 3)
+                };
+
                 var cb = new CheckBox
                 {
-                    Content = t.Title,
-                    IsChecked = t.Done,
+                    Content = $"[{t.Category}] {t.Title}",
+                    IsChecked = t.IsCompleted,
                     FontSize = 14,
-                    Margin = new Thickness(5, 3, 0, 3)
+                    VerticalAlignment = VerticalAlignment.Center
                 };
 
                 cb.Checked += (_, __) =>
                 {
-                    t.Done = true;
+                    t.IsCompleted = true;
                     RenderTasks();
                 };
 
                 cb.Unchecked += (_, __) =>
                 {
-                    t.Done = false;
+                    t.IsCompleted = false;
                     RenderTasks();
                 };
 
-                if (t.Done)
+                cb.MouseDoubleClick += (_, __) =>
                 {
-                    completedTaskList.Items.Add(cb);
+                    EditTask(t, itemPanel);
+                };
+
+                itemPanel.Children.Add(cb);
+                var editButton = new Button
+                {
+                    Content = "✎",
+                    Width = 25,
+                    Height = 25,
+                    Margin = new Thickness(5, 0, 0, 0),
+                    FontSize = 12,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                editButton.Click += (_, __) => EditTask(t, itemPanel);
+                itemPanel.Children.Add(editButton);
+
+                if (t.IsCompleted)
+                {
+                    completedTaskList.Items.Add(itemPanel);
                 }
                 else
                 {
-                    pendingTaskList.Items.Add(cb);
+                    pendingTaskList.Items.Add(itemPanel);
                 }
             }
+        }
+
+        private void EditTask(TaskItem task, StackPanel itemPanel)
+        {
+            itemPanel.Children.Clear();
+
+            var editTextBox = new TextBox
+            {
+                Text = task.Title,
+                Width = 300,
+                FontSize = 14,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(0, 0, 5, 0)
+            };
+
+            var editComboBox = new ComboBox
+            {
+                Width = 120,
+                FontSize = 14,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(0, 0, 5, 0)
+            };
+            editComboBox.Items.Add(TaskCategory.Livelihood);
+            editComboBox.Items.Add(TaskCategory.FutureGrowth);
+            editComboBox.Items.Add(TaskCategory.PermanentResidency);
+            editComboBox.SelectedItem = task.Category;
+
+            var saveButton = new Button
+            {
+                Content = "✓",
+                Width = 30,
+                Height = 25,
+                Margin = new Thickness(0, 0, 5, 0),
+                FontSize = 14,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            var cancelButton = new Button
+            {
+                Content = "✕",
+                Width = 30,
+                Height = 25,
+                FontSize = 14,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            saveButton.Click += (_, __) =>
+            {
+                string newTitle = editTextBox.Text.Trim();
+                if (!string.IsNullOrWhiteSpace(newTitle))
+                {
+                    task.Title = newTitle;
+                    if (editComboBox.SelectedItem is TaskCategory selectedCategory)
+                    {
+                        task.Category = selectedCategory;
+                    }
+                }
+                RenderTasks();
+            };
+
+            cancelButton.Click += (_, __) =>
+            {
+                RenderTasks();
+            };
+
+            editTextBox.KeyDown += (_, e) =>
+            {
+                if (e.Key == System.Windows.Input.Key.Enter)
+                {
+                    saveButton.RaiseEvent(new System.Windows.RoutedEventArgs(Button.ClickEvent));
+                }
+                else if (e.Key == System.Windows.Input.Key.Escape)
+                {
+                    cancelButton.RaiseEvent(new System.Windows.RoutedEventArgs(Button.ClickEvent));
+                }
+            };
+
+            itemPanel.Children.Add(editTextBox);
+            itemPanel.Children.Add(editComboBox);
+            itemPanel.Children.Add(saveButton);
+            itemPanel.Children.Add(cancelButton);
+
+            editTextBox.Focus();
+            editTextBox.SelectAll();
         }
     }
 
     public class TaskItem
     {
         public string Title { get; set; }
-        public bool Done { get; set; }
+        public bool IsCompleted { get; set; }
+        public TaskCategory Category { get; set; }
 
-        public TaskItem(string title, bool done)
+        public TaskItem(string title, bool isCompleted, TaskCategory category = TaskCategory.Livelihood)
         {
             Title = title;
-            Done = done;
+            IsCompleted = isCompleted;
+            Category = category;
         }
     }
 }
